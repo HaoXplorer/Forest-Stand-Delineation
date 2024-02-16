@@ -1,11 +1,17 @@
-pro merging-homogeneous-segments
+; This code requires input of both the attributes of oversegmented stands and its corresponding raster file.
+; It will then apply the merging-homogeneous-segments rule to merge the segments into ideal forest stands.
 
-  ;attributes 
+pro merging-homogeneous-segments
+  
+  ; Forest Stand Attributes
+  ; Calculate the common side length attribute of the forest stands after oversegmentation, as the input CSV file 'length of the common edge.csv'
+  ; Calculate the 'AREA, CHM_mean, canopy, tree_class, tree_percent' attributes of forest stands, as the input CSV file 'attribute segment_attributes.csv'  
+ 
   csvfile="segment_attributes.csv"  
   intersectfile='length of the common edge.csv' 
   outcsv = "out.csv"
 
-  data2 = read_csv(intersectfile)
+  data2 = read_csv(intersectfile)  
   treeCAL = {CAL, xiaobanID:0UL,neighborID:0UL,length:0.0}
   CALData = replicate(treeCAL, n_elements(data2.field1))
   CALData.xiaobanID = data2.field1
@@ -22,7 +28,10 @@ pro merging-homogeneous-segments
   ELEData.treeclass = data.field5
   ELEData.treepercent = data.field6
 
-  ;raster
+  ; Raster Input
+  ; Input the raster file of forest stands after oversegmentation as 'segments.dat'
+  ; This code will then apply the merging-homogeneous-segments rule to merge the segments into ideal forest stands.
+  
   compile_opt IDL2
   ENVI,/Restore_Base_Save_Files
   e=ENVI()
