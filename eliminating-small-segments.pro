@@ -1,10 +1,18 @@
+; This code requires input of both the attributes of stands after applying the merging-homogeneous-segments rule and its corresponding raster file. 
+; The code will then apply the eliminating-small-segments rule to further merge segments into ideal forest stands. 
+; This rule addresses cases where segments are below the minimum area threshold.
+
 pro eliminating-small-segments
 
   ;raster
   compile_opt IDL2
   ENVI,/Restore_Base_Save_Files
   e=ENVI()
-  ;attributes
+  
+  ; Forest Stand Attributes
+  ; Calculate the common side length attribute of the forest stands after applying the merging-homogeneous-segments rule, as the input CSV file 'length of the common edge.csv'
+  ; Calculate the 'AREA, CHM_mean, canopy, tree_class, tree_percent' attributes of forest stands, as the input CSV file 'attribute segment_attributes.csv'  
+
   csvfile="segment_attributes.csv"  
   intersectfile='length of the common edge.csv' 
   outcsv = "out.csv"
@@ -24,6 +32,10 @@ pro eliminating-small-segments
   ELEData.canopy = data.field4
   ELEData.treeclass = data.field5
   ELEData.treepercent = data.field6
+
+  ; Raster Input
+  ; Input the raster file of forest stands after applying the merging-homogeneous-segments rule as 'segments.dat'
+  ; This code will then apply the eliminating-small-segments rule to merge the segments into ideal forest stands.
 
   filename="segments.dat" 
   outfile="merged_segments.dat" 
